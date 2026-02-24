@@ -112,10 +112,17 @@ export default function ResultDisplay({ winner, isJackpot = false, onDismiss, on
               {winner.name.toUpperCase()}
             </motion.h3>
 
-            <div className="mt-8 flex items-center justify-center gap-6">
+            <div className="mt-8 flex items-center justify-center gap-4">
               <button
                 onClick={onDismiss}
-                className="font-display text-xs text-gray-400 hover:text-white transition-colors"
+                className="px-6 py-3 rounded-lg text-sm tracking-wider text-white transition-all hover:scale-105"
+                style={{
+                  fontFamily: "'Abril Fatface', serif",
+                  background: "linear-gradient(180deg, #606060, #484848 40%, #383838 100%)",
+                  border: "1px solid #2a2a2a",
+                  boxShadow: "0 4px 0 #1a1a1a, 0 6px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.15)",
+                  textShadow: "0 1px 2px rgba(0,0,0,0.5)",
+                }}
               >
                 {t("result.dismiss")}
               </button>
@@ -127,7 +134,14 @@ export default function ResultDisplay({ winner, isJackpot = false, onDismiss, on
                     setShared(true);
                     setTimeout(() => setShared(false), 2000);
                   }}
-                  className="font-display text-xs text-casino-gold hover:text-yellow-300 transition-colors"
+                  className="px-6 py-3 rounded-lg text-sm tracking-wider text-white transition-all hover:scale-105"
+                  style={{
+                    fontFamily: "'Abril Fatface', serif",
+                    background: "linear-gradient(180deg, #e8a020, #d4881a 40%, #b87015 100%)",
+                    border: "1px solid #8a5510",
+                    boxShadow: "0 4px 0 #6a4010, 0 6px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.25)",
+                    textShadow: "0 1px 2px rgba(0,0,0,0.5)",
+                  }}
                 >
                   {shared ? t("result.shared") : t("client.share")}
                 </button>
