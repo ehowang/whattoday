@@ -44,6 +44,8 @@ const dict: Record<string, { en: string; zh: string }> = {
   "form.imagePlaceholder": { en: "Image URL (optional)", zh: "图片链接（可选）" },
   "form.uploading": { en: "Uploading...", zh: "上传中..." },
   "form.add": { en: "ADD FOOD", zh: "添加食物" },
+  "form.fileTooLarge": { en: "Image too large (max 4MB)", zh: "图片太大（最大4MB）" },
+  "form.uploadFailed": { en: "Upload failed, please try again", zh: "上传失败，请重试" },
 
   // Food item card
   "card.yes": { en: "Yes", zh: "是" },

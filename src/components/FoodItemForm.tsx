@@ -14,18 +14,34 @@ export default function FoodItemForm({ onAdd }: Props) {
   const [imageUrl, setImageUrl] = useState("");
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleUpload(file: File) {
+    setError(null);
+
+    if (file.size > 4 * 1024 * 1024) {
+      setError(t("form.fileTooLarge"));
+      return;
+    }
+
     setUploading(true);
     try {
       const formData = new FormData();
       formData.append("file", file);
       const res = await fetch("/api/upload", { method: "POST", body: formData });
+      if (!res.ok) {
+        setError(t("form.uploadFailed"));
+        return;
+      }
       const data = await res.json();
       if (data.url) {
         setImageUrl(data.url);
         setPreview(data.url);
+      } else {
+        setError(t("form.uploadFailed"));
       }
+    } catch {
+      setError(t("form.uploadFailed"));
     } finally {
       setUploading(false);
     }
@@ -97,6 +113,7 @@ export default function FoodItemForm({ onAdd }: Props) {
                        file:bg-casino-gold file:text-black file:cursor-pointer"
           />
           {uploading && <span className="text-xs text-casino-gold">{t("form.uploading")}</span>}
+          {error && <span className="text-xs text-casino-red">{error}</span>}
         </label>
       )}
 
