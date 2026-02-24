@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { FoodItem, FoodList } from "@/lib/types";
 import { supabaseBrowser as supabase } from "@/lib/supabase";
+import { useLocale } from "@/lib/i18n";
 import FoodDrawer from "@/components/FoodDrawer";
 import SlotMachine from "@/components/SlotMachine";
 
@@ -15,6 +16,7 @@ export default function SlotMachineClient({ list, initialItems }: Props) {
   const [items, setItems] = useState<FoodItem[]>(initialItems);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const { t } = useLocale();
 
   function handleShare() {
     navigator.clipboard.writeText(window.location.href);
@@ -67,14 +69,14 @@ export default function SlotMachineClient({ list, initialItems }: Props) {
         className="fixed top-4 left-4 text-casino-gold text-sm z-30
                    hover:scale-110 transition-transform font-display"
       >
-        {copied ? "COPIED!" : "SHARE 🔗"}
+        {copied ? t("client.copied") : t("client.share")}
       </button>
 
       <button
         onClick={() => setDrawerOpen(true)}
         className="fixed top-4 right-4 text-casino-gold text-2xl z-30
                    hover:scale-110 transition-transform"
-        aria-label="Manage food items"
+        aria-label={t("client.manage")}
       >
         ⚙️
       </button>

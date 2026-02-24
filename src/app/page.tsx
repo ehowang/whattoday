@@ -2,10 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useLocale } from "@/lib/i18n";
 
 export default function Home() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { t } = useLocale();
 
   async function handleCreate() {
     setLoading(true);
@@ -30,14 +32,13 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-center gap-8 px-4">
       <div className="text-center">
         <h1 className="font-display text-casino-gold text-3xl md:text-5xl mb-4 leading-relaxed">
-          WHAT TO EAT
+          {t("landing.title1")}
         </h1>
         <h2 className="font-display text-casino-gold text-2xl md:text-4xl mb-6">
-          TODAY?
+          {t("landing.title2")}
         </h2>
         <p className="text-gray-400 text-lg max-w-md mx-auto">
-          Can&apos;t decide what to eat? Let the slot machine decide for you!
-          Add your favorite foods and spin the reel.
+          {t("landing.desc")}
         </p>
       </div>
 
@@ -49,7 +50,7 @@ export default function Home() {
                    disabled:opacity-50 disabled:cursor-not-allowed
                    shadow-lg shadow-casino-red/30"
       >
-        {loading ? "CREATING..." : "CREATE NEW LIST"}
+        {loading ? t("landing.creating") : t("landing.create")}
       </button>
     </main>
   );

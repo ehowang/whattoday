@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import type { FoodItem } from "@/lib/types";
+import { useLocale } from "@/lib/i18n";
 import FoodItemCard from "./FoodItemCard";
 import FoodItemForm from "./FoodItemForm";
 
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export default function FoodDrawer({ open, onClose, items, onAdd, onDelete }: Props) {
+  const { t } = useLocale();
   return (
     <AnimatePresence>
       {open && (
@@ -37,7 +39,7 @@ export default function FoodDrawer({ open, onClose, items, onAdd, onDelete }: Pr
                        border-l border-casino-gold/30 z-50 flex flex-col"
           >
             <div className="flex items-center justify-between p-4 border-b border-casino-gold/20">
-              <h2 className="font-display text-casino-gold text-xs">FOOD ITEMS</h2>
+              <h2 className="font-display text-casino-gold text-xs">{t("drawer.title")}</h2>
               <button onClick={onClose} className="text-gray-400 hover:text-white text-xl">
                 ✕
               </button>
@@ -49,7 +51,7 @@ export default function FoodDrawer({ open, onClose, items, onAdd, onDelete }: Pr
               <div className="space-y-2">
                 {items.length === 0 ? (
                   <p className="text-gray-500 text-sm text-center py-4">
-                    No food items yet. Add some above!
+                    {t("drawer.empty")}
                   </p>
                 ) : (
                   items.map((item) => (

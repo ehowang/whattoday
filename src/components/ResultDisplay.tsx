@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import type { FoodItem } from "@/lib/types";
+import { useLocale } from "@/lib/i18n";
 
 interface Props {
   winner: FoodItem | null;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export default function ResultDisplay({ winner, isJackpot = false, onDismiss }: Props) {
+  const { t } = useLocale();
   useEffect(() => {
     if (!winner || !isJackpot) return;
 
@@ -64,11 +66,11 @@ export default function ResultDisplay({ winner, isJackpot = false, onDismiss }: 
                 animate={{ opacity: [1, 0.5, 1] }}
                 transition={{ duration: 0.6, repeat: Infinity }}
               >
-                JACKPOT!!!
+                {t("result.jackpot")}
               </motion.p>
             )}
             <p className="font-display text-casino-gold text-sm md:text-lg mb-6 tracking-wider">
-              TODAY YOU EAT:
+              {t("result.header")}
             </p>
 
             {winner.image_url ? (
@@ -112,7 +114,7 @@ export default function ResultDisplay({ winner, isJackpot = false, onDismiss }: 
               onClick={onDismiss}
               className="mt-8 font-display text-xs text-gray-400 hover:text-white transition-colors"
             >
-              TAP TO SPIN AGAIN
+              {t("result.dismiss")}
             </button>
           </motion.div>
         </motion.div>

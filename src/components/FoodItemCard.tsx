@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { FoodItem } from "@/lib/types";
+import { useLocale } from "@/lib/i18n";
 
 interface Props {
   item: FoodItem;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export default function FoodItemCard({ item, onDelete }: Props) {
+  const { t } = useLocale();
   const [confirming, setConfirming] = useState(false);
 
   return (
@@ -33,13 +35,13 @@ export default function FoodItemCard({ item, onDelete }: Props) {
             onClick={() => onDelete(item.id)}
             className="text-xs bg-casino-red px-2 py-1 rounded"
           >
-            Yes
+            {t("card.yes")}
           </button>
           <button
             onClick={() => setConfirming(false)}
             className="text-xs bg-gray-600 px-2 py-1 rounded"
           >
-            No
+            {t("card.no")}
           </button>
         </div>
       ) : (

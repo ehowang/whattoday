@@ -3,6 +3,7 @@
 import { useRef, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import type { FoodItem } from "@/lib/types";
+import { useLocale } from "@/lib/i18n";
 import Reel, { ReelHandle } from "./Reel";
 import CasinoLights from "./CasinoLights";
 import Lever from "./Lever";
@@ -16,6 +17,7 @@ interface Props {
 const ITEM_HEIGHT = 110;
 
 export default function SlotMachine({ items }: Props) {
+  const { t } = useLocale();
   const reel1Ref = useRef<ReelHandle>(null);
   const reel2Ref = useRef<ReelHandle>(null);
   const reel3Ref = useRef<ReelHandle>(null);
@@ -57,7 +59,7 @@ export default function SlotMachine({ items }: Props) {
     return (
       <div className="text-center py-12">
         <p className="font-display text-casino-gold text-xs leading-relaxed">
-          ADD SOME FOOD ITEMS<br />TO START SPINNING!
+          {t("slot.empty1")}<br />{t("slot.empty2")}
         </p>
       </div>
     );
@@ -117,7 +119,7 @@ export default function SlotMachine({ items }: Props) {
                         textShadow: "0 0 12px rgba(255,200,100,0.5), 0 0 30px rgba(255,180,60,0.2)",
                       }}
                     >
-                      PAYTABLE
+                      {t("slot.paytable")}
                     </span>
                   </div>
 
@@ -308,7 +310,7 @@ export default function SlotMachine({ items }: Props) {
                       boxShadow: "inset 0 1px 2px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05)",
                     }}
                   />
-                  <span className="text-[7px] text-gray-500 tracking-wider">COIN</span>
+                  <span className="text-[7px] text-gray-500 tracking-wider">{t("slot.coin")}</span>
                 </div>
 
                 {/* SPIN button */}
@@ -333,7 +335,7 @@ export default function SlotMachine({ items }: Props) {
                   }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  SPIN
+                  {t("slot.spin")}
                 </motion.button>
 
                 {/* BET MAX button */}
@@ -354,7 +356,7 @@ export default function SlotMachine({ items }: Props) {
                   }}
                   whileTap={{ scale: 0.97, y: 3 }}
                 >
-                  BET MAX
+                  {t("slot.betMax")}
                 </motion.button>
 
                 {/* Status indicator */}
@@ -374,7 +376,7 @@ export default function SlotMachine({ items }: Props) {
                     className="text-[7px] tracking-wider"
                     style={{ color: spinning ? "#f80" : "#6a6" }}
                   >
-                    {spinning ? "SPIN" : "READY"}
+                    {spinning ? t("slot.spinning") : t("slot.ready")}
                   </span>
                 </div>
               </div>

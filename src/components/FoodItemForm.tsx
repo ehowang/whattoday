@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useLocale } from "@/lib/i18n";
 
 interface Props {
   onAdd: (name: string, imageUrl: string | null) => void;
 }
 
 export default function FoodItemForm({ onAdd }: Props) {
+  const { t } = useLocale();
   const [name, setName] = useState("");
   const [imageMode, setImageMode] = useState<"url" | "upload">("url");
   const [imageUrl, setImageUrl] = useState("");
@@ -42,7 +44,7 @@ export default function FoodItemForm({ onAdd }: Props) {
     <div className="space-y-3 bg-casino-darker rounded-lg p-3">
       <input
         type="text"
-        placeholder="Food name"
+        placeholder={t("form.placeholder")}
         value={name}
         maxLength={100}
         onChange={(e) => setName(e.target.value)}
@@ -57,7 +59,7 @@ export default function FoodItemForm({ onAdd }: Props) {
             imageMode === "url" ? "bg-casino-gold text-black" : "bg-casino-dark text-gray-400"
           }`}
         >
-          URL
+          {t("form.url")}
         </button>
         <button
           onClick={() => setImageMode("upload")}
@@ -65,14 +67,14 @@ export default function FoodItemForm({ onAdd }: Props) {
             imageMode === "upload" ? "bg-casino-gold text-black" : "bg-casino-dark text-gray-400"
           }`}
         >
-          Upload
+          {t("form.upload")}
         </button>
       </div>
 
       {imageMode === "url" ? (
         <input
           type="url"
-          placeholder="Image URL (optional)"
+          placeholder={t("form.imagePlaceholder")}
           value={imageUrl}
           onChange={(e) => {
             setImageUrl(e.target.value);
@@ -94,7 +96,7 @@ export default function FoodItemForm({ onAdd }: Props) {
                        file:rounded file:border-0 file:text-xs
                        file:bg-casino-gold file:text-black file:cursor-pointer"
           />
-          {uploading && <span className="text-xs text-casino-gold">Uploading...</span>}
+          {uploading && <span className="text-xs text-casino-gold">{t("form.uploading")}</span>}
         </label>
       )}
 
@@ -108,7 +110,7 @@ export default function FoodItemForm({ onAdd }: Props) {
         className="w-full bg-casino-green text-black font-bold text-sm py-2 rounded
                    hover:opacity-90 disabled:opacity-30 disabled:cursor-not-allowed transition-opacity"
       >
-        ADD FOOD
+        {t("form.add")}
       </button>
     </div>
   );
