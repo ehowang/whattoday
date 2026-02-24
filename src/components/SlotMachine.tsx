@@ -6,6 +6,7 @@ import Reel, { ReelHandle } from "./Reel";
 import CasinoLights from "./CasinoLights";
 import Lever from "./Lever";
 import ResultDisplay from "./ResultDisplay";
+import { sounds } from "@/lib/sounds";
 
 interface Props {
   items: FoodItem[];
@@ -21,8 +22,14 @@ export default function SlotMachine({ items }: Props) {
     setSpinning(true);
     setWinner(null);
 
+    sounds.lever();
+    setTimeout(() => sounds.startSpin(), 200);
+
     const result = await reelRef.current?.spin();
-    if (result) setWinner(result);
+    if (result) {
+      sounds.win();
+      setWinner(result);
+    }
     setSpinning(false);
   }, [spinning, items.length]);
 
