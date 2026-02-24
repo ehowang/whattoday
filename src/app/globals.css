@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-casino-gold: #FFD700;
+  --color-casino-red: #DC143C;
+  --color-casino-dark: #1a0a2e;
+  --color-casino-darker: #0d0519;
+  --color-casino-neon: #ff6b35;
+  --color-casino-green: #00ff88;
+  --font-display: "Press Start 2P", monospace;
+}
+
+body {
+  background: radial-gradient(ellipse at center, #1a0a2e 0%, #0d0519 70%);
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+}
