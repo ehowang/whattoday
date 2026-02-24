@@ -38,7 +38,6 @@ export const sounds = {
   },
   win() {
     ensureLoaded();
-    sounds.stopSpin();
     winSound?.play();
   },
 };

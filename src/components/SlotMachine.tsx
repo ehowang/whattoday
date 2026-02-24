@@ -42,6 +42,8 @@ export default function SlotMachine({ items }: Props) {
 
     await Promise.all([spin1, spin2, spin3]);
 
+    sounds.stopSpin();
+
     const isJackpot = idx1 === idx2 && idx2 === idx3;
     if (isJackpot) {
       sounds.win();
