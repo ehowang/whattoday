@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import type { FoodItem, FoodList } from "@/lib/types";
+import { supabase } from "@/lib/supabase";
+import FoodDrawer from "@/components/FoodDrawer";
 
 interface Props {
   list: FoodList;
@@ -12,31 +14,71 @@ export default function SlotMachineClient({ list, initialItems }: Props) {
   const [items, setItems] = useState<FoodItem[]>(initialItems);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  async function handleAdd(name: string, imageUrl: string | null) {
+    const newItem: FoodItem = {
+      id: crypto.randomUUID(),
+      list_id: list.id,
+      name,
+      image_url: imageUrl,
+      sort_order: items.length,
+      created_at: new Date().toISOString(),
+    };
+
+    // Optimistic update
+    setItems((prev) => [...prev, newItem]);
+
+    const { error } = await supabase.from("food_items").insert({
+      id: newItem.id,
+      list_id: list.id,
+      name,
+      image_url: imageUrl,
+      sort_order: newItem.sort_order,
+    });
+
+    if (error) {
+      setItems((prev) => prev.filter((i) => i.id !== newItem.id));
+    }
+  }
+
+  async function handleDelete(id: string) {
+    const prev = items;
+    setItems((items) => items.filter((i) => i.id !== id));
+
+    const { error } = await supabase.from("food_items").delete().eq("id", id);
+    if (error) {
+      setItems(prev);
+    }
+  }
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center relative">
-      {/* Placeholder for slot machine */}
+    <main className="flex min-h-screen flex-col items-center justify-center relative overflow-hidden">
+      {/* Slot machine will go here */}
       <div className="text-center">
-        <p className="text-gray-400 mb-2">List: {list.short_code}</p>
-        <p className="text-gray-400">{items.length} food items</p>
+        <p className="text-gray-500 text-sm mb-4">{items.length} items in list</p>
+        {items.length === 0 && (
+          <p className="font-display text-casino-gold text-xs">
+            TAP ⚙️ TO ADD FOOD ITEMS
+          </p>
+        )}
       </div>
 
-      {/* Gear icon to open drawer */}
+      {/* Gear icon */}
       <button
-        onClick={() => setDrawerOpen(!drawerOpen)}
-        className="fixed top-4 right-4 text-casino-gold text-2xl z-50
+        onClick={() => setDrawerOpen(true)}
+        className="fixed top-4 right-4 text-casino-gold text-2xl z-30
                    hover:scale-110 transition-transform"
         aria-label="Manage food items"
       >
         ⚙️
       </button>
 
-      {/* Placeholder for drawer */}
-      {drawerOpen && (
-        <div className="fixed right-0 top-0 h-full w-80 bg-casino-dark border-l border-casino-gold/30 z-40 p-4">
-          <h2 className="font-display text-casino-gold text-sm mb-4">FOOD ITEMS</h2>
-          <p className="text-gray-400">Drawer content coming next...</p>
-        </div>
-      )}
+      <FoodDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        items={items}
+        onAdd={handleAdd}
+        onDelete={handleDelete}
+      />
     </main>
   );
 }
