@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { FoodItem, FoodList } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 import FoodDrawer from "@/components/FoodDrawer";
+import SlotMachine from "@/components/SlotMachine";
 
 interface Props {
   list: FoodList;
@@ -24,7 +25,6 @@ export default function SlotMachineClient({ list, initialItems }: Props) {
       created_at: new Date().toISOString(),
     };
 
-    // Optimistic update
     setItems((prev) => [...prev, newItem]);
 
     const { error } = await supabase.from("food_items").insert({
@@ -52,17 +52,8 @@ export default function SlotMachineClient({ list, initialItems }: Props) {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center relative overflow-hidden">
-      {/* Slot machine will go here */}
-      <div className="text-center">
-        <p className="text-gray-500 text-sm mb-4">{items.length} items in list</p>
-        {items.length === 0 && (
-          <p className="font-display text-casino-gold text-xs">
-            TAP ⚙️ TO ADD FOOD ITEMS
-          </p>
-        )}
-      </div>
+      <SlotMachine items={items} />
 
-      {/* Gear icon */}
       <button
         onClick={() => setDrawerOpen(true)}
         className="fixed top-4 right-4 text-casino-gold text-2xl z-30
