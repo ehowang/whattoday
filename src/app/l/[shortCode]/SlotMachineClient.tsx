@@ -59,6 +59,7 @@ export default function SlotMachineClient({ list, initialItems }: Props) {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center relative overflow-hidden">
+      <div className="casino-environment" />
       <SlotMachine items={items} />
 
       <button

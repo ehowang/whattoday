@@ -13,116 +13,241 @@
   --font-display: "Press Start 2P", monospace;
 }
 
+/* Casino floor environment background */
 body {
-  background: radial-gradient(ellipse at center, #1a0a2e 0%, #0d0519 70%);
+  background: #0a0608;
   color: #ffffff;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Chrome metallic gradient for borders */
-.chrome-border {
+.casino-environment {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(180, 40, 200, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 30%, rgba(30, 80, 220, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(200, 50, 50, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at center, #1a0e14 0%, #0a0608 100%);
+  filter: blur(0px);
+}
+
+/* Brushed stainless steel body */
+.machine-body-steel {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      rgba(255,255,255,0.015) 1px,
+      transparent 2px,
+      transparent 4px
+    ),
+    linear-gradient(
+      170deg,
+      #4a4a4a 0%,
+      #3a3a3a 8%,
+      #2d2d2d 15%,
+      #353535 25%,
+      #404040 35%,
+      #383838 50%,
+      #2e2e2e 65%,
+      #333333 78%,
+      #3b3b3b 88%,
+      #303030 100%
+    );
+}
+
+/* Chrome bezel - thick metallic frame */
+.chrome-bezel {
   background: linear-gradient(
-    180deg,
-    #f0f0f0 0%,
-    #d4d4d4 8%,
-    #8a8a8a 15%,
-    #c0c0c0 25%,
-    #f5f5f5 35%,
-    #b0b0b0 50%,
-    #909090 65%,
-    #c8c8c8 75%,
-    #e0e0e0 85%,
-    #888888 95%,
-    #a0a0a0 100%
+    170deg,
+    #a8a8a8 0%,
+    #d4d4d4 5%,
+    #f2f2f2 12%,
+    #c8c8c8 20%,
+    #b0b0b0 30%,
+    #e0e0e0 40%,
+    #f8f8f8 48%,
+    #d0d0d0 55%,
+    #a0a0a0 65%,
+    #c0c0c0 75%,
+    #e8e8e8 82%,
+    #b8b8b8 90%,
+    #909090 100%
   );
 }
 
-/* Horizontal chrome for top/bottom bars */
-.chrome-horizontal {
+/* Horizontal chrome strip */
+.chrome-strip {
   background: linear-gradient(
     90deg,
-    #888 0%,
-    #d0d0d0 15%,
-    #f5f5f5 30%,
-    #c0c0c0 50%,
-    #f0f0f0 70%,
-    #b0b0b0 85%,
+    #777 0%,
+    #b0b0b0 8%,
+    #e0e0e0 20%,
+    #f5f5f5 35%,
+    #d8d8d8 50%,
+    #f0f0f0 65%,
+    #c8c8c8 80%,
+    #a0a0a0 92%,
+    #777 100%
+  );
+}
+
+/* Paytable backlit panel */
+.paytable-panel {
+  background: linear-gradient(
+    180deg,
+    #1a0800 0%,
+    #301200 5%,
+    #5a2800 15%,
+    #9a5500 30%,
+    #c87000 45%,
+    #daa520 55%,
+    #c87000 65%,
+    #9a5500 78%,
+    #5a2800 90%,
+    #1a0800 100%
+  );
+}
+
+/* Reel window - cream/white background like real machine */
+.reel-window-light {
+  background: linear-gradient(
+    180deg,
+    #d8d0c0 0%,
+    #e8e2d4 15%,
+    #f0ebe0 30%,
+    #f5f0e6 50%,
+    #f0ebe0 70%,
+    #e8e2d4 85%,
+    #d8d0c0 100%
+  );
+  box-shadow:
+    inset 0 8px 20px rgba(0, 0, 0, 0.6),
+    inset 0 -8px 20px rgba(0, 0, 0, 0.6),
+    inset 6px 0 15px rgba(0, 0, 0, 0.4),
+    inset -6px 0 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Control panel brushed metal */
+.control-panel {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      rgba(255,255,255,0.02) 1px,
+      transparent 2px,
+      transparent 3px
+    ),
+    linear-gradient(
+      180deg,
+      #555 0%,
+      #484848 20%,
+      #404040 50%,
+      #484848 80%,
+      #505050 100%
+    );
+}
+
+/* 3D button base */
+.spin-btn {
+  background: linear-gradient(180deg, #606060, #484848 40%, #383838 100%);
+  border: 1px solid #2a2a2a;
+  box-shadow:
+    0 4px 0 #1a1a1a,
+    0 6px 8px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.spin-btn:active, .spin-btn-pressed {
+  box-shadow:
+    0 1px 0 #1a1a1a,
+    0 2px 4px rgba(0,0,0,0.5),
+    inset 0 2px 4px rgba(0,0,0,0.3);
+  transform: translateY(3px);
+}
+
+.spin-btn-red {
+  background: linear-gradient(180deg, #e04040, #cc2020 40%, #a01818 100%);
+  border: 1px solid #701010;
+  box-shadow:
+    0 4px 0 #501010,
+    0 6px 8px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+}
+.spin-btn-red:active {
+  box-shadow:
+    0 1px 0 #501010,
+    0 2px 4px rgba(0,0,0,0.5),
+    inset 0 2px 4px rgba(0,0,0,0.3);
+  transform: translateY(3px);
+}
+
+/* Chrome divider between reels */
+.reel-divider {
+  width: 4px;
+  background: linear-gradient(
+    180deg,
+    #666 0%,
+    #aaa 10%,
+    #ddd 25%,
+    #f2f2f2 40%,
+    #ccc 55%,
+    #eee 70%,
+    #bbb 85%,
     #888 100%
   );
+  box-shadow: 1px 0 3px rgba(0,0,0,0.3), -1px 0 3px rgba(0,0,0,0.2);
 }
 
-/* Warm header glow panel */
-.header-glow {
-  background: linear-gradient(
-    180deg,
-    #2a1000 0%,
-    #4a1800 10%,
-    #ff6b00 30%,
-    #ff9500 50%,
-    #ff6b00 70%,
-    #4a1800 90%,
-    #2a1000 100%
-  );
+/* Ambient neon reflection on metal */
+.neon-reflect-pink {
+  position: absolute;
+  pointer-events: none;
+  background: radial-gradient(ellipse, rgba(200, 50, 150, 0.06) 0%, transparent 70%);
 }
-
-/* Machine body gradient (dark with subtle 3D) */
-.machine-body {
-  background: linear-gradient(
-    135deg,
-    #2a2a2a 0%,
-    #1a1a1a 20%,
-    #111111 40%,
-    #0a0a0a 60%,
-    #151515 80%,
-    #1a1a1a 100%
-  );
-}
-
-/* Reel window inset shadow */
-.reel-window {
-  background: linear-gradient(180deg, #111 0%, #1a1a1a 50%, #111 100%);
-  box-shadow:
-    inset 0 4px 12px rgba(0, 0, 0, 0.8),
-    inset 0 -4px 12px rgba(0, 0, 0, 0.8),
-    inset 4px 0 12px rgba(0, 0, 0, 0.5),
-    inset -4px 0 12px rgba(0, 0, 0, 0.5);
-}
-
-/* Chrome lever arm */
-.lever-arm {
-  background: linear-gradient(
-    90deg,
-    #808080 0%,
-    #c0c0c0 25%,
-    #e8e8e8 45%,
-    #d0d0d0 55%,
-    #a0a0a0 75%,
-    #707070 100%
-  );
-}
-
-/* Indicator bar animation */
-@keyframes indicator-pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
-}
-
-@keyframes indicator-sweep {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-/* Spinning state glow on reel window */
-@keyframes reel-glow {
-  0%, 100% { box-shadow: inset 0 0 30px rgba(255, 107, 0, 0.1); }
-  50% { box-shadow: inset 0 0 30px rgba(255, 107, 0, 0.3); }
+.neon-reflect-blue {
+  position: absolute;
+  pointer-events: none;
+  background: radial-gradient(ellipse, rgba(50, 100, 220, 0.05) 0%, transparent 70%);
 }
 
 /* Chrome screw detail */
 .chrome-screw {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #f0f0f0, #888 50%, #555 100%);
-  box-shadow: inset 0 1px 2px rgba(255,255,255,0.6), 0 1px 2px rgba(0,0,0,0.5);
+  background: radial-gradient(circle at 35% 35%, #e8e8e8, #999 40%, #555 80%, #444 100%);
+  box-shadow: inset 0 1px 2px rgba(255,255,255,0.5), 0 1px 3px rgba(0,0,0,0.6);
+}
+.chrome-screw::after {
+  content: "";
+  display: block;
+  position: relative;
+  top: 4px;
+  left: 2px;
+  width: 6px;
+  height: 1.5px;
+  background: #444;
+  border-radius: 1px;
+}
+
+/* Keyframes */
+@keyframes reel-glow {
+  0%, 100% { box-shadow: inset 0 0 20px rgba(255, 180, 0, 0.05); }
+  50% { box-shadow: inset 0 0 30px rgba(255, 180, 0, 0.15); }
+}
+
+@keyframes marquee-flash {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Coin tray depression */
+.coin-tray {
+  background: linear-gradient(180deg, #1a1a1a, #252525, #1a1a1a);
+  box-shadow:
+    inset 0 4px 10px rgba(0,0,0,0.7),
+    inset 0 -2px 6px rgba(0,0,0,0.4),
+    inset 3px 0 8px rgba(0,0,0,0.3),
+    inset -3px 0 8px rgba(0,0,0,0.3);
 }

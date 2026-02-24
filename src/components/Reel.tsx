@@ -13,7 +13,7 @@ interface Props {
   duration?: number;
 }
 
-const ITEM_HEIGHT = 120;
+const ITEM_HEIGHT = 110;
 const VISIBLE_ITEMS = 3;
 
 const Reel = forwardRef<ReelHandle, Props>(({ items, duration = 3.5 }, ref) => {
@@ -32,11 +32,13 @@ const Reel = forwardRef<ReelHandle, Props>(({ items, duration = 3.5 }, ref) => {
 
       await controls.set({ y: 0 });
 
+      // Overshoot then bounce-back for mechanical click feel
       await controls.start({
-        y: targetY,
+        y: [0, targetY - 8, targetY + 3, targetY],
         transition: {
           duration,
-          ease: [0.12, 0.82, 0.32, 1.01],
+          times: [0, 0.92, 0.97, 1],
+          ease: [0.12, 0.82, 0.32, 1.0],
         },
       });
     },
@@ -51,32 +53,35 @@ const Reel = forwardRef<ReelHandle, Props>(({ items, duration = 3.5 }, ref) => {
         {strip.map((item, i) => (
           <div
             key={`${item.id}-${i}`}
-            className="flex flex-col items-center justify-center px-2"
+            className="flex flex-col items-center justify-center px-1"
             style={{ height: ITEM_HEIGHT }}
           >
             {item.image_url ? (
               <img
                 src={item.image_url}
                 alt={item.name}
-                className="w-14 h-14 rounded-lg object-cover mb-1"
+                className="w-16 h-16 rounded-lg object-cover mb-1"
                 style={{
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.5)",
-                  border: "2px solid rgba(255,215,0,0.15)",
+                  boxShadow: "0 2px 6px rgba(0,0,0,0.25)",
+                  border: "1px solid rgba(0,0,0,0.1)",
                 }}
               />
             ) : (
               <div
-                className="w-14 h-14 rounded-lg flex items-center justify-center text-2xl mb-1"
+                className="w-16 h-16 rounded-lg flex items-center justify-center text-3xl mb-1"
                 style={{
-                  background: "linear-gradient(135deg, #1a1a2e, #16213e)",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.5)",
-                  border: "2px solid rgba(255,215,0,0.15)",
+                  background: "linear-gradient(135deg, #f0e8d8, #e8dcc8)",
+                  boxShadow: "0 2px 6px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.5)",
+                  border: "1px solid rgba(0,0,0,0.1)",
                 }}
               >
                 😋
               </div>
             )}
-            <span className="text-white text-[10px] font-bold truncate max-w-[80px] text-center drop-shadow-md">
+            <span
+              className="text-[10px] font-bold truncate max-w-[85px] text-center"
+              style={{ color: "#2a2a2a", textShadow: "0 1px 0 rgba(255,255,255,0.5)" }}
+            >
               {item.name}
             </span>
           </div>
