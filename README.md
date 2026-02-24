@@ -55,7 +55,7 @@
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 16+
 - A [Supabase](https://supabase.com) project
 
 ### 1. Clone and install

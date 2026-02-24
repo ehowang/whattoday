@@ -55,7 +55,7 @@
 
 ### 前置条件
 
-- Node.js 18+
+- Node.js 16+
 - 一个 [Supabase](https://supabase.com) 项目
 
 ### 1. 克隆并安装
