@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 type Locale = "en" | "zh";
 
@@ -55,7 +55,6 @@ const dict: Record<string, { en: string; zh: string }> = {
   "client.copied": { en: "COPIED!", zh: "已复制！" },
   "client.share": { en: "SHARE 🔗", zh: "分享 🔗" },
   "client.manage": { en: "Manage food items", zh: "管理食物" },
-
 };
 
 function detectLocale(): Locale {
@@ -63,26 +62,25 @@ function detectLocale(): Locale {
   return navigator.language.startsWith("zh") ? "zh" : "en";
 }
 
-let cachedLocale: Locale | null = null;
-
-export function getLocale(): Locale {
-  if (cachedLocale) return cachedLocale;
-  cachedLocale = detectLocale();
-  return cachedLocale;
-}
-
-export function t(key: string): string {
+function translate(key: string, locale: Locale): string {
   const entry = dict[key];
   if (!entry) return key;
-  return entry[getLocale()];
+  return entry[locale];
 }
 
+// Hook that starts with "en" during SSR/hydration, then updates to
+// the detected locale after mount — avoids hydration mismatch.
 export function useLocale() {
-  const locale = useMemo(() => getLocale(), []);
-  const translate = useMemo(() => (key: string) => {
-    const entry = dict[key];
-    if (!entry) return key;
-    return entry[locale];
-  }, [locale]);
-  return { locale, t: translate };
+  const [locale, setLocale] = useState<Locale>("en");
+
+  useEffect(() => {
+    setLocale(detectLocale());
+  }, []);
+
+  const t = useCallback(
+    (key: string) => translate(key, locale),
+    [locale]
+  );
+
+  return { locale, t };
 }

@@ -29,15 +29,18 @@ export async function POST(request: NextRequest) {
     }
 
     const fileName = `${nanoid()}.${ext}`;
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
 
     const { error } = await supabase.storage
       .from("food-images")
-      .upload(fileName, file, {
+      .upload(fileName, buffer, {
         contentType: file.type,
+        upsert: false,
       });
 
     if (error) {
-      console.error("Supabase upload error:", error);
+      console.error("Supabase upload error:", error.message, error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
