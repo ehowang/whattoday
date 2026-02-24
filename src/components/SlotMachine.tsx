@@ -97,61 +97,82 @@ export default function SlotMachine({ items }: Props) {
               <div
                 className="paytable-panel relative overflow-hidden"
                 style={{
-                  padding: "16px 20px",
-                  boxShadow: "inset 0 0 40px rgba(180, 100, 0, 0.2)",
+                  padding: "14px 16px 12px",
+                  background: "linear-gradient(180deg, rgba(30,15,0,0.92) 0%, rgba(20,10,0,0.95) 100%)",
+                  boxShadow: "inset 0 0 60px rgba(200, 130, 30, 0.15), inset 0 0 20px rgba(255, 180, 50, 0.08)",
                 }}
               >
                 {/* Paytable content */}
                 <div className="relative z-10">
                   {/* Title */}
-                  <div className="text-center mb-2">
+                  <div className="text-center mb-3">
                     <span
-                      className="text-xs font-bold tracking-[0.3em] uppercase"
+                      className="tracking-[0.4em] uppercase"
                       style={{
+                        fontFamily: "'Abril Fatface', serif",
+                        fontSize: "13px",
                         color: "#ffe8b0",
-                        textShadow: "0 0 8px rgba(255,200,100,0.6)",
-                        fontFamily: "Georgia, serif",
+                        textShadow: "0 0 12px rgba(255,200,100,0.5), 0 0 30px rgba(255,180,60,0.2)",
                       }}
                     >
                       PAYTABLE
                     </span>
                   </div>
 
-                  {/* Payout rows */}
-                  <div className="flex justify-between items-center gap-3 text-[9px]" style={{ color: "#ffe0a0" }}>
-                    <div className="flex flex-col gap-1 items-start">
-                      <div className="flex items-center gap-1">
-                        <span>😋😋😋</span>
-                        <span style={{ color: "#fff", fontWeight: "bold", textShadow: "0 0 6px rgba(255,200,0,0.8)" }}>JACKPOT!</span>
+                  {/* 3-column payout grid */}
+                  <div className="grid grid-cols-[1fr_auto_1fr] gap-x-3 items-start">
+                    {/* Left column */}
+                    <div className="flex flex-col gap-[5px]">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px]">😋😋😋</span>
+                        <span style={{ fontFamily: "'Abril Fatface', serif", fontSize: "13px", color: "#fff", textShadow: "0 0 8px rgba(255,200,0,0.9), 0 0 20px rgba(255,150,0,0.4)" }}>7000</span>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <span>🍔🍔🍔</span>
-                        <span>5000</span>
+                      <div className="flex items-center justify-between" style={{ color: "#ffe0a0" }}>
+                        <span className="text-[10px]">🍔🍔🍔</span>
+                        <span style={{ fontFamily: "'Abril Fatface', serif", fontSize: "11px" }}>1000</span>
+                      </div>
+                      <div className="flex items-center justify-between" style={{ color: "#ffe0a0" }}>
+                        <span className="text-[10px]">🍕🍕🍕</span>
+                        <span style={{ fontFamily: "'Abril Fatface', serif", fontSize: "11px" }}>50</span>
+                      </div>
+                      <div className="flex items-center justify-between" style={{ color: "#d4c090" }}>
+                        <span className="text-[10px]">🌮🌮</span>
+                        <span style={{ fontFamily: "'Abril Fatface', serif", fontSize: "11px" }}>30</span>
                       </div>
                     </div>
 
-                    {/* Center 77 */}
-                    <div
-                      className="font-bold text-center"
-                      style={{
-                        fontSize: "32px",
-                        color: "#fff",
-                        textShadow: "0 0 25px rgba(255,200,0,0.9), 0 0 50px rgba(255,150,0,0.5), 0 3px 6px rgba(0,0,0,0.6)",
-                        fontFamily: "Georgia, serif",
-                        lineHeight: 1,
-                      }}
-                    >
-                      77
+                    {/* Center: large 777 */}
+                    <div className="flex flex-col items-center justify-center px-2">
+                      <div
+                        style={{
+                          fontFamily: "'Abril Fatface', serif",
+                          fontSize: "38px",
+                          color: "#fff",
+                          textShadow: "0 0 25px rgba(255,200,0,0.9), 0 0 50px rgba(255,150,0,0.5), 0 3px 6px rgba(0,0,0,0.6)",
+                          lineHeight: 1,
+                        }}
+                      >
+                        777
+                      </div>
                     </div>
 
-                    <div className="flex flex-col gap-1 items-end">
-                      <div className="flex items-center gap-1">
-                        <span style={{ color: "#fff", fontWeight: "bold", textShadow: "0 0 6px rgba(255,200,0,0.8)" }}>1500</span>
-                        <span>🍕🍕🍕</span>
+                    {/* Right column */}
+                    <div className="flex flex-col gap-[5px]">
+                      <div className="flex items-center justify-between">
+                        <span style={{ fontFamily: "'Abril Fatface', serif", fontSize: "13px", color: "#fff", textShadow: "0 0 8px rgba(255,200,0,0.9), 0 0 20px rgba(255,150,0,0.4)" }}>1500</span>
+                        <span className="text-[10px]">🍜🍜🍜</span>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <span>250</span>
-                        <span>🍜🍜🍜</span>
+                      <div className="flex items-center justify-between" style={{ color: "#ffe0a0" }}>
+                        <span style={{ fontFamily: "'Abril Fatface', serif", fontSize: "11px" }}>250</span>
+                        <span className="text-[10px]">🍣🍣🍣</span>
+                      </div>
+                      <div className="flex items-center justify-between" style={{ color: "#ffe0a0" }}>
+                        <span style={{ fontFamily: "'Abril Fatface', serif", fontSize: "11px" }}>100</span>
+                        <span className="text-[10px]">🥗🥗</span>
+                      </div>
+                      <div className="flex items-center justify-between" style={{ color: "#d4c090" }}>
+                        <span style={{ fontFamily: "'Abril Fatface', serif", fontSize: "11px" }}>25</span>
+                        <span className="text-[10px]">🍔</span>
                       </div>
                     </div>
                   </div>
@@ -165,11 +186,11 @@ export default function SlotMachine({ items }: Props) {
                   }}
                 />
 
-                {/* Backlight glow at edges */}
+                {/* Steady backlight glow */}
                 <div
                   className="absolute inset-0 pointer-events-none"
                   style={{
-                    boxShadow: "inset 0 0 50px rgba(200, 150, 50, 0.15)",
+                    boxShadow: "inset 0 0 80px rgba(200, 130, 30, 0.12), inset 0 0 30px rgba(255, 180, 60, 0.06)",
                   }}
                 />
               </div>
