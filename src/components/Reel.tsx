@@ -5,7 +5,7 @@ import { useImperativeHandle, forwardRef } from "react";
 import type { FoodItem } from "@/lib/types";
 
 export interface ReelHandle {
-  spin: () => Promise<FoodItem>;
+  spin: () => Promise<FoodItem | undefined>;
 }
 
 interface Props {
@@ -22,8 +22,8 @@ const Reel = forwardRef<ReelHandle, Props>(({ items }, ref) => {
   const strip = Array.from({ length: repeats }, () => items).flat();
 
   useImperativeHandle(ref, () => ({
-    async spin(): Promise<FoodItem> {
-      if (items.length === 0) return items[0];
+    async spin(): Promise<FoodItem | undefined> {
+      if (items.length === 0) return undefined;
 
       // Pick random winner
       const winnerIndex = Math.floor(Math.random() * items.length);

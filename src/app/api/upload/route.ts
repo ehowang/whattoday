@@ -3,7 +3,12 @@ import { supabase } from "@/lib/supabase";
 import { nanoid } from "nanoid";
 
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+const MIME_TO_EXT: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+  "image/gif": "gif",
+};
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData();
@@ -13,7 +18,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "No file provided" }, { status: 400 });
   }
 
-  if (!ALLOWED_TYPES.includes(file.type)) {
+  const ext = MIME_TO_EXT[file.type];
+  if (!ext) {
     return NextResponse.json({ error: "Invalid file type" }, { status: 400 });
   }
 
@@ -21,7 +27,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "File too large (max 5MB)" }, { status: 400 });
   }
 
-  const ext = file.name.split(".").pop();
   const fileName = `${nanoid()}.${ext}`;
 
   const { error } = await supabase.storage

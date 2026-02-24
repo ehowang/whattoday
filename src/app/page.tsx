@@ -11,9 +11,15 @@ export default function Home() {
     setLoading(true);
     try {
       const res = await fetch("/api/lists", { method: "POST" });
+      if (!res.ok) {
+        setLoading(false);
+        return;
+      }
       const data = await res.json();
       if (data.shortCode) {
         router.push(`/l/${data.shortCode}`);
+      } else {
+        setLoading(false);
       }
     } catch {
       setLoading(false);

@@ -44,6 +44,7 @@ export default function FoodItemForm({ onAdd }: Props) {
         type="text"
         placeholder="Food name"
         value={name}
+        maxLength={100}
         onChange={(e) => setName(e.target.value)}
         className="w-full bg-casino-dark border border-casino-gold/30 rounded px-3 py-2
                    text-sm text-white placeholder-gray-500 focus:outline-none focus:border-casino-gold"
