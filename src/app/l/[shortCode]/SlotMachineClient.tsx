@@ -14,6 +14,13 @@ interface Props {
 export default function SlotMachineClient({ list, initialItems }: Props) {
   const [items, setItems] = useState<FoodItem[]>(initialItems);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  function handleShare() {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
 
   async function handleAdd(name: string, imageUrl: string | null) {
     const newItem: FoodItem = {
@@ -53,6 +60,14 @@ export default function SlotMachineClient({ list, initialItems }: Props) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center relative overflow-hidden">
       <SlotMachine items={items} />
+
+      <button
+        onClick={handleShare}
+        className="fixed top-4 left-4 text-casino-gold text-sm z-30
+                   hover:scale-110 transition-transform font-display"
+      >
+        {copied ? "COPIED!" : "SHARE 🔗"}
+      </button>
 
       <button
         onClick={() => setDrawerOpen(true)}
