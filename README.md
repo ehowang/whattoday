@@ -1,61 +1,134 @@
-# What To Eat Today?
+# What To Eat Today? 🎰
 
-A casino-themed slot machine web app that helps you decide what to eat. Add your favorite foods, pull the lever, and let fate choose your next meal.
+[中文版](./README.zh-CN.md)
 
-Built with a photorealistic skeuomorphic design — brushed steel cabinet, chrome bezels, backlit paytable, 3D buttons, and spring-physics lever. Three independent reels spin with staggered timing and mechanical bounce-back. Land a triple match for a jackpot celebration with confetti.
+> Can't decide what to eat? Pull the lever and let the slot machine choose for you.
 
-## Features
-
-- Photorealistic slot machine with casino cabinet aesthetic
-- Three independent reels with staggered spin timing
-- Jackpot celebration when all three reels match
-- Add food items with names and optional images
-- Shareable lists via short links
-- Auto-detects browser language (English / Chinese)
-- Sound effects for lever pull, spin, and win
-- Fully responsive design
-
-## Tech Stack
-
-- **Next.js 16** (App Router, TypeScript)
-- **Tailwind CSS v4**
-- **Framer Motion** for animations
-- **Supabase** (Postgres + Storage)
-- **Howler.js** for sound effects
-- **canvas-confetti** for win celebrations
+**What To Eat Today?** is a casino-themed slot machine web app that turns the daily "what should I eat" dilemma into a fun, shareable game. Create a food list, add your favorites, and spin the reels. The center reel picks your meal — unless all three match, then it's a jackpot!
 
 ## Live Demo
 
 [whattoday-ten.vercel.app](https://whattoday-ten.vercel.app)
 
----
+## Screenshots
 
-# 今天吃什么？
+<!-- Add screenshots here -->
 
-一个赌场风格的老虎机网页应用，帮你决定今天吃什么。添加你喜欢的食物，拉下拉杆，让命运来选择你的下一餐。
+## Features
 
-采用拟物化写实设计 — 拉丝钢机身、镀铬边框、背光赔率表、3D 按钮和弹簧物理拉杆。三个独立转轮以交错节奏旋转，带有机械回弹效果。三个转轮全部匹配时触发大奖庆祝动画。
+**Slot Machine**
+- Photorealistic skeuomorphic design with brushed steel cabinet, chrome bezels, and backlit paytable
+- Three independent reels with staggered spin timing and mechanical bounce-back animation
+- Spring-physics lever with damped oscillation
+- Jackpot celebration with confetti when all three reels match
+- Sound effects for lever pull, reel spin, and win
 
-## 功能特点
+**Food Management**
+- Add food items with custom names and optional images (URL or upload)
+- Delete items with confirmation
+- Guided onboarding — food drawer opens automatically for new lists
 
-- 写实风格老虎机，赌场机柜美学设计
-- 三个独立转轮，交错旋转节奏
-- 三轮匹配时触发大奖庆祝（彩带特效）
-- 添加食物名称和可选图片
-- 通过短链接分享食物列表
-- 自动检测浏览器语言（英文 / 中文）
-- 拉杆、旋转、中奖音效
-- 完全响应式设计
+**Sharing**
+- Each list gets a unique short link
+- Share button appears in the result overlay after each spin
+- Recipients see the same food list and can spin themselves
 
-## 技术栈
+**Internationalization**
+- Auto-detects browser language
+- English and Chinese (Simplified) supported
 
-- **Next.js 16**（App Router、TypeScript）
-- **Tailwind CSS v4**
-- **Framer Motion** 动画引擎
-- **Supabase**（Postgres 数据库 + 对象存储）
-- **Howler.js** 音效
-- **canvas-confetti** 彩带庆祝特效
+## Tech Stack
 
-## 在线演示
+| Layer | Technology |
+|-------|-----------|
+| Framework | [Next.js 16](https://nextjs.org) (App Router, TypeScript) |
+| Styling | [Tailwind CSS v4](https://tailwindcss.com) |
+| Animation | [Framer Motion](https://www.framer.com/motion/) |
+| Database | [Supabase](https://supabase.com) (PostgreSQL) |
+| Storage | [Supabase Storage](https://supabase.com/docs/guides/storage) |
+| Sound | [Howler.js](https://howlerjs.com) |
+| Effects | [canvas-confetti](https://github.com/catdad/canvas-confetti) |
+| Fonts | Press Start 2P, Abril Fatface (Google Fonts) |
+| Deployment | [Vercel](https://vercel.com) |
 
-[whattoday-ten.vercel.app](https://whattoday-ten.vercel.app)
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- A [Supabase](https://supabase.com) project
+
+### 1. Clone and install
+
+```bash
+git clone https://github.com/ehowang/whattoday.git
+cd whattoday
+npm install
+```
+
+### 2. Set up Supabase
+
+1. Create a new project at [supabase.com](https://supabase.com)
+2. Go to **SQL Editor** and run the contents of [`supabase/schema.sql`](./supabase/schema.sql)
+3. Go to **Storage** → create a bucket named `food-images` → set to **Public**
+4. Go to **Settings** → **API** and copy your project URL and anon key
+
+### 3. Configure environment
+
+```bash
+cp .env.local.example .env.local
+```
+
+Edit `.env.local` with your Supabase credentials:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+### 4. Run
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## Deployment
+
+Push to GitHub and import the repository on [Vercel](https://vercel.com). Add the two environment variables (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`) in the Vercel project settings. Vercel auto-detects Next.js and handles the rest.
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── page.tsx                  # Landing page
+│   ├── layout.tsx                # Root layout with fonts
+│   ├── globals.css               # Casino theme CSS
+│   ├── api/
+│   │   ├── lists/route.ts        # POST: create new food list
+│   │   └── upload/route.ts       # POST: upload food image
+│   └── l/[shortCode]/
+│       ├── page.tsx              # SSR list page
+│       └── SlotMachineClient.tsx # Client-side slot machine wrapper
+├── components/
+│   ├── SlotMachine.tsx           # Main cabinet with paytable, reels, controls
+│   ├── Reel.tsx                  # Single reel with bounce-back animation
+│   ├── Lever.tsx                 # Spring-physics pull lever
+│   ├── ResultDisplay.tsx         # Win overlay with share button
+│   ├── FoodDrawer.tsx            # Slide-in food management panel
+│   ├── FoodItemForm.tsx          # Add food form (name + image)
+│   ├── FoodItemCard.tsx          # Food item with delete
+│   └── CasinoLights.tsx         # Decorative indicator lights
+└── lib/
+    ├── supabase.ts               # Supabase client (lazy singleton)
+    ├── i18n.ts                   # Browser language detection + translations
+    ├── sounds.ts                 # Sound effect manager (Howler.js)
+    ├── shortcode.ts              # nanoid-based short code generator
+    └── types.ts                  # TypeScript interfaces
+```
+
+## License
+
+MIT
