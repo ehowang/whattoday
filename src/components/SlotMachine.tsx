@@ -12,8 +12,13 @@ interface Props {
   items: FoodItem[];
 }
 
+const ITEM_HEIGHT = 120;
+const VISIBLE_ITEMS = 3;
+
 export default function SlotMachine({ items }: Props) {
-  const reelRef = useRef<ReelHandle>(null);
+  const reel1Ref = useRef<ReelHandle>(null);
+  const reel2Ref = useRef<ReelHandle>(null);
+  const reel3Ref = useRef<ReelHandle>(null);
   const [spinning, setSpinning] = useState(false);
   const [winner, setWinner] = useState<FoodItem | null>(null);
 
@@ -25,13 +30,20 @@ export default function SlotMachine({ items }: Props) {
     sounds.lever();
     setTimeout(() => sounds.startSpin(), 200);
 
-    const result = await reelRef.current?.spin();
-    if (result) {
-      sounds.win();
-      setWinner(result);
-    }
+    // Pick a single winner -- all 3 reels land on the same item
+    const winnerIndex = Math.floor(Math.random() * items.length);
+
+    // Stagger: left stops first, middle second, right last
+    const spin1 = reel1Ref.current?.spin(winnerIndex);
+    const spin2 = reel2Ref.current?.spin(winnerIndex);
+    const spin3 = reel3Ref.current?.spin(winnerIndex);
+
+    await Promise.all([spin1, spin2, spin3]);
+
+    sounds.win();
+    setWinner(items[winnerIndex]);
     setSpinning(false);
-  }, [spinning, items.length]);
+  }, [spinning, items]);
 
   if (items.length === 0) {
     return (
@@ -58,30 +70,21 @@ export default function SlotMachine({ items }: Props) {
           <div
             className="machine-body rounded-xl overflow-hidden"
             style={{
-              width: 320,
+              width: 360,
               boxShadow: "inset 0 2px 10px rgba(0,0,0,0.5)",
             }}
           >
             {/* ── TOP HEADER PANEL ── */}
             <div className="relative">
-              {/* Chrome bar top */}
               <div className="chrome-horizontal h-[4px]" />
-
-              {/* Header glow panel */}
               <div
                 className="header-glow py-4 px-6 relative overflow-hidden"
-                style={{
-                  boxShadow: "inset 0 0 30px rgba(255, 107, 0, 0.3)",
-                }}
+                style={{ boxShadow: "inset 0 0 30px rgba(255, 107, 0, 0.3)" }}
               >
-                {/* Decorative 77 like reference */}
                 <div className="text-center relative z-10">
                   <p
                     className="font-display text-[10px] tracking-[0.2em] mb-1"
-                    style={{
-                      color: "#ffe0a0",
-                      textShadow: "0 0 10px rgba(255,150,0,0.8)",
-                    }}
+                    style={{ color: "#ffe0a0", textShadow: "0 0 10px rgba(255,150,0,0.8)" }}
                   >
                     WHAT TO EAT
                   </p>
@@ -96,16 +99,11 @@ export default function SlotMachine({ items }: Props) {
                   </div>
                   <p
                     className="font-display text-[10px] tracking-[0.2em] mt-1"
-                    style={{
-                      color: "#ffe0a0",
-                      textShadow: "0 0 10px rgba(255,150,0,0.8)",
-                    }}
+                    style={{ color: "#ffe0a0", textShadow: "0 0 10px rgba(255,150,0,0.8)" }}
                   >
                     TODAY?
                   </p>
                 </div>
-
-                {/* Subtle scan line effect */}
                 <div
                   className="absolute inset-0 pointer-events-none opacity-10"
                   style={{
@@ -113,8 +111,6 @@ export default function SlotMachine({ items }: Props) {
                   }}
                 />
               </div>
-
-              {/* Chrome bar bottom of header */}
               <div className="chrome-horizontal h-[4px]" />
             </div>
 
@@ -127,14 +123,76 @@ export default function SlotMachine({ items }: Props) {
                   boxShadow: "0 2px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2)",
                 }}
               >
-                {/* Reel window with inset shadow */}
+                {/* Reel window */}
                 <div
                   className="reel-window rounded-md overflow-hidden relative"
                   style={{
                     animation: spinning ? "reel-glow 0.5s ease-in-out infinite" : "none",
                   }}
                 >
-                  <Reel ref={reelRef} items={items} />
+                  {/* 3 reels side by side */}
+                  <div className="flex relative">
+                    {/* Reel 1 (left) */}
+                    <div className="flex-1 min-w-0">
+                      <Reel ref={reel1Ref} items={items} duration={2.5} />
+                    </div>
+
+                    {/* Chrome divider */}
+                    <div
+                      style={{
+                        width: 3,
+                        background: "linear-gradient(180deg, #888 0%, #d0d0d0 20%, #f0f0f0 40%, #c0c0c0 60%, #a0a0a0 80%, #888 100%)",
+                        boxShadow: "0 0 4px rgba(0,0,0,0.3)",
+                      }}
+                    />
+
+                    {/* Reel 2 (center) */}
+                    <div className="flex-1 min-w-0">
+                      <Reel ref={reel2Ref} items={items} duration={3.2} />
+                    </div>
+
+                    {/* Chrome divider */}
+                    <div
+                      style={{
+                        width: 3,
+                        background: "linear-gradient(180deg, #888 0%, #d0d0d0 20%, #f0f0f0 40%, #c0c0c0 60%, #a0a0a0 80%, #888 100%)",
+                        boxShadow: "0 0 4px rgba(0,0,0,0.3)",
+                      }}
+                    />
+
+                    {/* Reel 3 (right) */}
+                    <div className="flex-1 min-w-0">
+                      <Reel ref={reel3Ref} items={items} duration={3.8} />
+                    </div>
+                  </div>
+
+                  {/* Center row highlight spanning all 3 columns */}
+                  <div
+                    className="absolute left-0 right-0 z-10 pointer-events-none"
+                    style={{
+                      top: ITEM_HEIGHT,
+                      height: ITEM_HEIGHT,
+                      borderTop: "2px solid rgba(255, 215, 0, 0.5)",
+                      borderBottom: "2px solid rgba(255, 215, 0, 0.5)",
+                      background: "linear-gradient(90deg, rgba(255,215,0,0.03) 0%, rgba(255,215,0,0.1) 50%, rgba(255,215,0,0.03) 100%)",
+                    }}
+                  />
+
+                  {/* Top/bottom fades */}
+                  <div
+                    className="absolute top-0 left-0 right-0 z-10 pointer-events-none"
+                    style={{
+                      height: ITEM_HEIGHT * 0.4,
+                      background: "linear-gradient(180deg, rgba(10,10,10,0.85) 0%, transparent 100%)",
+                    }}
+                  />
+                  <div
+                    className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none"
+                    style={{
+                      height: ITEM_HEIGHT * 0.4,
+                      background: "linear-gradient(0deg, rgba(10,10,10,0.85) 0%, transparent 100%)",
+                    }}
+                  />
                 </div>
               </div>
             </div>
@@ -190,7 +248,6 @@ export default function SlotMachine({ items }: Props) {
               </button>
             </div>
 
-            {/* ── BOTTOM CHROME ── */}
             <div className="chrome-horizontal h-[3px]" />
           </div>
         </div>
