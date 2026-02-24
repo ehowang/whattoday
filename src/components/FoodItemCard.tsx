@@ -21,7 +21,7 @@ export default function FoodItemCard({ item, onDelete }: Props) {
         />
       ) : (
         <div className="w-10 h-10 rounded bg-casino-dark flex items-center justify-center text-lg">
-          🍴
+          😋
         </div>
       )}
 

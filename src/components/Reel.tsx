@@ -73,7 +73,7 @@ const Reel = forwardRef<ReelHandle, Props>(({ items, duration = 3.5 }, ref) => {
                   border: "2px solid rgba(255,215,0,0.15)",
                 }}
               >
-                🍴
+                😋
               </div>
             )}
             <span className="text-white text-[10px] font-bold truncate max-w-[80px] text-center drop-shadow-md">

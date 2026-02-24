@@ -80,7 +80,7 @@ export default function ResultDisplay({ winner, onDismiss }: Props) {
               <div className="w-40 h-40 md:w-56 md:h-56 rounded-2xl bg-casino-dark
                               flex items-center justify-center text-7xl mx-auto mb-6
                               border-4 border-casino-gold">
-                🍴
+                😋
               </div>
             )}
 
