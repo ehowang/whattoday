@@ -7,14 +7,15 @@ import type { FoodItem } from "@/lib/types";
 
 interface Props {
   winner: FoodItem | null;
+  isJackpot?: boolean;
   onDismiss: () => void;
 }
 
-export default function ResultDisplay({ winner, onDismiss }: Props) {
+export default function ResultDisplay({ winner, isJackpot = false, onDismiss }: Props) {
   useEffect(() => {
-    if (!winner) return;
+    if (!winner || !isJackpot) return;
 
-    // Fire confetti
+    // Fire confetti only on jackpot (triple match)
     const duration = 2000;
     const end = Date.now() + duration;
 
@@ -37,7 +38,7 @@ export default function ResultDisplay({ winner, onDismiss }: Props) {
       if (Date.now() < end) requestAnimationFrame(frame);
     };
     frame();
-  }, [winner]);
+  }, [winner, isJackpot]);
 
   return (
     <AnimatePresence mode="wait">
@@ -57,6 +58,15 @@ export default function ResultDisplay({ winner, onDismiss }: Props) {
             animate={{ y: 0 }}
             className="text-center"
           >
+            {isJackpot && (
+              <motion.p
+                className="font-display text-casino-red text-xs md:text-sm mb-2 tracking-widest"
+                animate={{ opacity: [1, 0.5, 1] }}
+                transition={{ duration: 0.6, repeat: Infinity }}
+              >
+                JACKPOT!!!
+              </motion.p>
+            )}
             <p className="font-display text-casino-gold text-sm md:text-lg mb-6 tracking-wider">
               TODAY YOU EAT:
             </p>
@@ -86,13 +96,13 @@ export default function ResultDisplay({ winner, onDismiss }: Props) {
 
             <motion.h3
               className="font-display text-white text-lg md:text-2xl"
-              animate={{
+              animate={isJackpot ? {
                 textShadow: [
                   "0 0 10px rgba(255,215,0,0.5)",
                   "0 0 30px rgba(255,215,0,0.8)",
                   "0 0 10px rgba(255,215,0,0.5)",
                 ],
-              }}
+              } : {}}
               transition={{ duration: 1.5, repeat: Infinity }}
             >
               {winner.name.toUpperCase()}

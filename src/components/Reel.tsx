@@ -19,7 +19,7 @@ const VISIBLE_ITEMS = 3;
 const Reel = forwardRef<ReelHandle, Props>(({ items, duration = 3.5 }, ref) => {
   const controls = useAnimation();
 
-  const repeats = 10;
+  const repeats = 20;
   const strip = Array.from({ length: repeats }, () => items).flat();
 
   useImperativeHandle(ref, () => ({

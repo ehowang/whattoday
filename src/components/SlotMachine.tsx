@@ -21,6 +21,7 @@ export default function SlotMachine({ items }: Props) {
   const reel3Ref = useRef<ReelHandle>(null);
   const [spinning, setSpinning] = useState(false);
   const [winner, setWinner] = useState<FoodItem | null>(null);
+  const [isJackpot, setIsJackpot] = useState(false);
   const [spinPressed, setSpinPressed] = useState(false);
 
   const handleSpin = useCallback(async () => {
@@ -31,16 +32,22 @@ export default function SlotMachine({ items }: Props) {
     sounds.lever();
     setTimeout(() => sounds.startSpin(), 200);
 
-    const winnerIndex = Math.floor(Math.random() * items.length);
+    const idx1 = Math.floor(Math.random() * items.length);
+    const idx2 = Math.floor(Math.random() * items.length);
+    const idx3 = Math.floor(Math.random() * items.length);
 
-    const spin1 = reel1Ref.current?.spin(winnerIndex);
-    const spin2 = reel2Ref.current?.spin(winnerIndex);
-    const spin3 = reel3Ref.current?.spin(winnerIndex);
+    const spin1 = reel1Ref.current?.spin(idx1);
+    const spin2 = reel2Ref.current?.spin(idx2);
+    const spin3 = reel3Ref.current?.spin(idx3);
 
     await Promise.all([spin1, spin2, spin3]);
 
-    sounds.win();
-    setWinner(items[winnerIndex]);
+    const isJackpot = idx1 === idx2 && idx2 === idx3;
+    if (isJackpot) {
+      sounds.win();
+    }
+    setIsJackpot(isJackpot);
+    setWinner(items[idx2]); // center reel decides
     setSpinning(false);
   }, [spinning, items]);
 
@@ -189,15 +196,15 @@ export default function SlotMachine({ items }: Props) {
                   {/* 3 reels side by side */}
                   <div className="flex relative">
                     <div className="flex-1 min-w-0">
-                      <Reel ref={reel1Ref} items={items} duration={2.5} />
+                      <Reel ref={reel1Ref} items={items} duration={3.5} />
                     </div>
                     <div className="reel-divider" />
                     <div className="flex-1 min-w-0">
-                      <Reel ref={reel2Ref} items={items} duration={3.2} />
+                      <Reel ref={reel2Ref} items={items} duration={4.5} />
                     </div>
                     <div className="reel-divider" />
                     <div className="flex-1 min-w-0">
-                      <Reel ref={reel3Ref} items={items} duration={3.8} />
+                      <Reel ref={reel3Ref} items={items} duration={5.5} />
                     </div>
                   </div>
 
@@ -376,7 +383,7 @@ export default function SlotMachine({ items }: Props) {
       </div>
 
       {/* === RESULT OVERLAY === */}
-      <ResultDisplay winner={winner} onDismiss={() => setWinner(null)} />
+      <ResultDisplay winner={winner} isJackpot={isJackpot} onDismiss={() => setWinner(null)} />
     </div>
   );
 }
