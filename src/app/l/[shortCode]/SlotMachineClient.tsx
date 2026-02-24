@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import type { FoodItem, FoodList } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 import { useLocale } from "@/lib/i18n";
@@ -14,15 +14,12 @@ interface Props {
 
 export default function SlotMachineClient({ list, initialItems }: Props) {
   const [items, setItems] = useState<FoodItem[]>(initialItems);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(initialItems.length === 0);
   const { t } = useLocale();
 
-  function handleShare() {
+  const handleShare = useCallback(() => {
     navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }
+  }, []);
 
   async function handleAdd(name: string, imageUrl: string | null) {
     const newItem: FoodItem = {
@@ -62,24 +59,19 @@ export default function SlotMachineClient({ list, initialItems }: Props) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center relative overflow-hidden">
       <div className="casino-environment" />
-      <SlotMachine items={items} />
+      <SlotMachine items={items} onShare={handleShare} />
 
-      <button
-        onClick={handleShare}
-        className="fixed top-4 left-4 text-casino-gold text-sm z-30
-                   hover:scale-110 transition-transform font-display"
-      >
-        {copied ? t("client.copied") : t("client.share")}
-      </button>
-
-      <button
-        onClick={() => setDrawerOpen(true)}
-        className="fixed top-4 right-4 text-casino-gold text-2xl z-30
-                   hover:scale-110 transition-transform"
-        aria-label={t("client.manage")}
-      >
-        ⚙️
-      </button>
+      {/* Gear icon — only visible when items exist */}
+      {items.length > 0 && (
+        <button
+          onClick={() => setDrawerOpen(true)}
+          className="fixed top-4 right-4 text-casino-gold text-2xl z-30
+                     hover:scale-110 transition-transform"
+          aria-label={t("client.manage")}
+        >
+          ⚙️
+        </button>
+      )}
 
       <FoodDrawer
         open={drawerOpen}
@@ -87,6 +79,7 @@ export default function SlotMachineClient({ list, initialItems }: Props) {
         items={items}
         onAdd={handleAdd}
         onDelete={handleDelete}
+        canClose={items.length > 0}
       />
     </main>
   );

@@ -12,11 +12,12 @@ import { sounds } from "@/lib/sounds";
 
 interface Props {
   items: FoodItem[];
+  onShare?: () => void;
 }
 
 const ITEM_HEIGHT = 110;
 
-export default function SlotMachine({ items }: Props) {
+export default function SlotMachine({ items, onShare }: Props) {
   const { t } = useLocale();
   const reel1Ref = useRef<ReelHandle>(null);
   const reel2Ref = useRef<ReelHandle>(null);
@@ -408,7 +409,7 @@ export default function SlotMachine({ items }: Props) {
       </div>
 
       {/* === RESULT OVERLAY === */}
-      <ResultDisplay winner={winner} isJackpot={isJackpot} onDismiss={() => setWinner(null)} />
+      <ResultDisplay winner={winner} isJackpot={isJackpot} onDismiss={() => setWinner(null)} onShare={onShare} />
     </div>
   );
 }

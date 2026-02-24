@@ -12,20 +12,21 @@ interface Props {
   items: FoodItem[];
   onAdd: (name: string, imageUrl: string | null) => void;
   onDelete: (id: string) => void;
+  canClose?: boolean;
 }
 
-export default function FoodDrawer({ open, onClose, items, onAdd, onDelete }: Props) {
+export default function FoodDrawer({ open, onClose, items, onAdd, onDelete, canClose = true }: Props) {
   const { t } = useLocale();
   return (
     <AnimatePresence>
       {open && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop — only dismissible when canClose */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.5 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
+            onClick={canClose ? onClose : undefined}
             className="fixed inset-0 bg-black z-40"
           />
 
@@ -40,9 +41,11 @@ export default function FoodDrawer({ open, onClose, items, onAdd, onDelete }: Pr
           >
             <div className="flex items-center justify-between p-4 border-b border-casino-gold/20">
               <h2 className="font-display text-casino-gold text-xs">{t("drawer.title")}</h2>
-              <button onClick={onClose} className="text-gray-400 hover:text-white text-xl">
-                ✕
-              </button>
+              {canClose && (
+                <button onClick={onClose} className="text-gray-400 hover:text-white text-xl">
+                  ✕
+                </button>
+              )}
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 space-y-4">

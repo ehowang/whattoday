@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import type { FoodItem } from "@/lib/types";
@@ -10,10 +10,12 @@ interface Props {
   winner: FoodItem | null;
   isJackpot?: boolean;
   onDismiss: () => void;
+  onShare?: () => void;
 }
 
-export default function ResultDisplay({ winner, isJackpot = false, onDismiss }: Props) {
+export default function ResultDisplay({ winner, isJackpot = false, onDismiss, onShare }: Props) {
   const { t } = useLocale();
+  const [shared, setShared] = useState(false);
   useEffect(() => {
     if (!winner || !isJackpot) return;
 
@@ -110,12 +112,27 @@ export default function ResultDisplay({ winner, isJackpot = false, onDismiss }: 
               {winner.name.toUpperCase()}
             </motion.h3>
 
-            <button
-              onClick={onDismiss}
-              className="mt-8 font-display text-xs text-gray-400 hover:text-white transition-colors"
-            >
-              {t("result.dismiss")}
-            </button>
+            <div className="mt-8 flex items-center justify-center gap-6">
+              <button
+                onClick={onDismiss}
+                className="font-display text-xs text-gray-400 hover:text-white transition-colors"
+              >
+                {t("result.dismiss")}
+              </button>
+
+              {onShare && (
+                <button
+                  onClick={() => {
+                    onShare();
+                    setShared(true);
+                    setTimeout(() => setShared(false), 2000);
+                  }}
+                  className="font-display text-xs text-casino-gold hover:text-yellow-300 transition-colors"
+                >
+                  {shared ? t("result.shared") : t("client.share")}
+                </button>
+              )}
+            </div>
           </motion.div>
         </motion.div>
       )}

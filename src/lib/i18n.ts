@@ -29,6 +29,7 @@ const dict: Record<string, { en: string; zh: string }> = {
   "result.jackpot": { en: "JACKPOT!!!", zh: "大奖!!!" },
   "result.header": { en: "TODAY YOU EAT:", zh: "今天你吃：" },
   "result.dismiss": { en: "TAP TO SPIN AGAIN", zh: "点击再转一次" },
+  "result.shared": { en: "LINK COPIED!", zh: "链接已复制！" },
 
   // Food drawer
   "drawer.title": { en: "FOOD ITEMS", zh: "食物列表" },
