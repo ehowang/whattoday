@@ -11,37 +11,43 @@ const MIME_TO_EXT: Record<string, string> = {
 };
 
 export async function POST(request: NextRequest) {
-  const formData = await request.formData();
-  const file = formData.get("file") as File | null;
+  try {
+    const formData = await request.formData();
+    const file = formData.get("file") as File | null;
 
-  if (!file) {
-    return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    if (!file) {
+      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    }
+
+    const ext = MIME_TO_EXT[file.type];
+    if (!ext) {
+      return NextResponse.json({ error: "Invalid file type" }, { status: 400 });
+    }
+
+    if (file.size > MAX_SIZE) {
+      return NextResponse.json({ error: "File too large (max 4MB)" }, { status: 400 });
+    }
+
+    const fileName = `${nanoid()}.${ext}`;
+
+    const { error } = await supabase.storage
+      .from("food-images")
+      .upload(fileName, file, {
+        contentType: file.type,
+      });
+
+    if (error) {
+      console.error("Supabase upload error:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    const { data: urlData } = supabase.storage
+      .from("food-images")
+      .getPublicUrl(fileName);
+
+    return NextResponse.json({ url: urlData.publicUrl });
+  } catch (err) {
+    console.error("Upload failed:", err);
+    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
-
-  const ext = MIME_TO_EXT[file.type];
-  if (!ext) {
-    return NextResponse.json({ error: "Invalid file type" }, { status: 400 });
-  }
-
-  if (file.size > MAX_SIZE) {
-    return NextResponse.json({ error: "File too large (max 5MB)" }, { status: 400 });
-  }
-
-  const fileName = `${nanoid()}.${ext}`;
-
-  const { error } = await supabase.storage
-    .from("food-images")
-    .upload(fileName, file, {
-      contentType: file.type,
-    });
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-
-  const { data: urlData } = supabase.storage
-    .from("food-images")
-    .getPublicUrl(fileName);
-
-  return NextResponse.json({ url: urlData.publicUrl });
 }

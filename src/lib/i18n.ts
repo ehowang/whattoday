@@ -56,15 +56,6 @@ const dict: Record<string, { en: string; zh: string }> = {
   "client.share": { en: "SHARE 🔗", zh: "分享 🔗" },
   "client.manage": { en: "Manage food items", zh: "管理食物" },
 
-  // Metadata
-  "meta.title": {
-    en: "What To Eat Today? | Slot Machine Food Picker",
-    zh: "今天吃什么？| 老虎机选餐器",
-  },
-  "meta.desc": {
-    en: "Spin the slot machine to decide what to eat! Add your favorite foods and let fate choose.",
-    zh: "转动老虎机来决定吃什么！添加你喜欢的食物，让命运来选择。",
-  },
 };
 
 function detectLocale(): Locale {

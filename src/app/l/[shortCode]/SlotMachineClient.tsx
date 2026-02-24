@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { FoodItem, FoodList } from "@/lib/types";
-import { supabaseBrowser as supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase";
 import { useLocale } from "@/lib/i18n";
 import FoodDrawer from "@/components/FoodDrawer";
 import SlotMachine from "@/components/SlotMachine";
